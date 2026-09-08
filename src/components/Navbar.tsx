@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles } from 'lucide-react';
+import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles, Bot } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatRupiah } from '../utils/formatters';
 
@@ -7,9 +7,10 @@ interface NavbarProps {
   searchQuery: string;
   setSearchQuery: (q: string) => void;
   onOpenPromo: () => void;
+  onOpenAI: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onOpenPromo }) => {
+export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onOpenPromo, onOpenAI }) => {
   const { totalItemCount, subtotal, setIsCartOpen, setIsTermsOpen } = useCart();
 
   return (
@@ -83,6 +84,17 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onO
           >
             <Tag className="w-4 h-4 text-fuchsia-400" />
             <span className="hidden sm:inline">Kupon Promo</span>
+          </button>
+
+          {/* AI Consultant Button */}
+          <button
+            onClick={onOpenAI}
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200 rounded-xl bg-cyan-950/50 hover:bg-cyan-900/60 border border-cyan-800/80 shadow-sm transition-all"
+            title="Tanya Rekomendasi SoundBot AI"
+          >
+            <Bot className="w-4 h-4 text-cyan-400" />
+            <span className="hidden sm:inline">SoundBot AI</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </button>
 
           {/* Cart Button */}

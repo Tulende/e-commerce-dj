@@ -11,6 +11,8 @@ import { CheckoutModal } from './components/CheckoutModal';
 import { PaymentSimulator } from './components/PaymentSimulator';
 import { RentalTermsModal } from './components/RentalTermsModal';
 import { PromoModal } from './components/PromoModal';
+import { AIAssistantModal } from './components/AIAssistantModal';
+import { AIFloatingTrigger } from './components/AIFloatingTrigger';
 import { Footer } from './components/Footer';
 import { Frown } from 'lucide-react';
 
@@ -22,6 +24,7 @@ const MainShop: React.FC = () => {
   const [onlyPromo, setOnlyPromo] = useState(false);
   const [sortBy, setSortBy] = useState<'featured' | 'price_asc' | 'price_desc' | 'rating'>('featured');
   const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
+  const [isAIOpen, setIsAIOpen] = useState(false);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -80,6 +83,7 @@ const MainShop: React.FC = () => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onOpenPromo={() => setIsPromoModalOpen(true)}
+        onOpenAI={() => setIsAIOpen(true)}
       />
 
       {/* Hero and Promotions */}
@@ -137,6 +141,8 @@ const MainShop: React.FC = () => {
       <PaymentSimulator />
       <RentalTermsModal />
       <PromoModal isOpen={isPromoModalOpen} onClose={() => setIsPromoModalOpen(false)} />
+      <AIAssistantModal isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
+      <AIFloatingTrigger isOpen={isAIOpen} onClick={() => setIsAIOpen(true)} />
 
       {/* Footer */}
       <Footer />
