@@ -8,4 +8,4 @@ directory = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "soundrent-db"
-database_id = "local-soundrent-db"
+database_id = "c7871282-b140-47d3-9244-90f6dffd8bb4"
