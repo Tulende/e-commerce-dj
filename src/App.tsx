@@ -13,6 +13,7 @@ import { RentalTermsModal } from './components/RentalTermsModal';
 import { PromoModal } from './components/PromoModal';
 import { AIAssistantModal } from './components/AIAssistantModal';
 import { AIFloatingTrigger } from './components/AIFloatingTrigger';
+import { AdminProductManager } from './components/AdminProductManager';
 import { Footer } from './components/Footer';
 import { Frown } from 'lucide-react';
 
@@ -143,6 +144,7 @@ const MainShop: React.FC = () => {
       <PromoModal isOpen={isPromoModalOpen} onClose={() => setIsPromoModalOpen(false)} />
       <AIAssistantModal isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
       <AIFloatingTrigger isOpen={isAIOpen} onClick={() => setIsAIOpen(true)} />
+      <AdminProductManager />
 
       {/* Footer */}
       <Footer />

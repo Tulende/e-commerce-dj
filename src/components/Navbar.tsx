@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles, Bot } from 'lucide-react';
+import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles, Bot, Database } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatRupiah } from '../utils/formatters';
 
@@ -11,7 +11,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onOpenPromo, onOpenAI }) => {
-  const { totalItemCount, subtotal, setIsCartOpen, setIsTermsOpen } = useCart();
+  const { totalItemCount, subtotal, setIsCartOpen, setIsTermsOpen, setIsAdminOpen, isBackendConnected } = useCart();
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#0B0F19]/90 border-b border-slate-800/80 transition-all">
@@ -95,6 +95,20 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onO
             <Bot className="w-4 h-4 text-cyan-400" />
             <span className="hidden sm:inline">SoundBot AI</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          </button>
+
+          {/* Kelola Produk / Admin Button */}
+          <button
+            onClick={() => setIsAdminOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/60 shadow-sm transition-all"
+            title="Kelola Data Produk Asli & Database"
+          >
+            <Database className="w-4 h-4 text-cyan-400" />
+            <span className="hidden sm:inline">Kelola Produk</span>
+            <span 
+              className={`w-1.5 h-1.5 rounded-full ${isBackendConnected ? 'bg-emerald-400' : 'bg-amber-400'}`}
+              title={isBackendConnected ? 'Cloudflare D1 Aktif' : 'Mode Offline/Lokal'}
+            />
           </button>
 
           {/* Cart Button */}

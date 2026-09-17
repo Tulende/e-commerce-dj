@@ -1,11 +1,19 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product, CartRentalItem, PromoCoupon, BookingOrder, PaymentMethodType, CustomerDetails } from '../types';
 import { DUMMY_PRODUCTS } from '../data/products';
 import { PROMO_COUPONS } from '../data/promotions';
 import { calculateDaysBetween, getTomorrowDateString, getDayAfterTomorrowDateString } from '../utils/formatters';
+import { soundRentApi } from '../services/api';
 
 interface CartContextType {
   products: Product[];
+  isLoadingProducts: boolean;
+  isBackendConnected: boolean;
+  reloadProducts: () => Promise<void>;
+  addNewProduct: (product: Partial<Product>) => Promise<Product>;
+  updateExistingProduct: (id: string, updates: Partial<Product>) => Promise<void>;
+  deleteExistingProduct: (id: string) => Promise<void>;
+
   cartItems: CartRentalItem[];
   addToCart: (product: Product, quantity?: number, startDate?: string, endDate?: string) => { success: boolean; message: string };
   removeFromCart: (productId: string) => void;
@@ -33,6 +41,8 @@ interface CartContextType {
   setIsCheckoutOpen: (open: boolean) => void;
   isTermsOpen: boolean;
   setIsTermsOpen: (open: boolean) => void;
+  isAdminOpen: boolean;
+  setIsAdminOpen: (open: boolean) => void;
   
   // Checkout & Payment
   activeBooking: BookingOrder | null;
@@ -51,6 +61,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return saved ? JSON.parse(saved) : DUMMY_PRODUCTS;
   });
 
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+  const [isBackendConnected, setIsBackendConnected] = useState(false);
+
   const [cartItems, setCartItems] = useState<CartRentalItem[]>(() => {
     const saved = localStorage.getItem('soundrent_cart');
     return saved ? JSON.parse(saved) : [];
@@ -65,8 +78,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [activeBooking, setActiveBooking] = useState<BookingOrder | null>(null);
   const [isPaymentSimulatorOpen, setIsPaymentSimulatorOpen] = useState(false);
+
+  // Fetch real data from Cloudflare D1
+  const reloadProducts = useCallback(async () => {
+    setIsLoadingProducts(true);
+    try {
+      const { products: fetched, isFromBackend } = await soundRentApi.getProducts();
+      if (fetched && fetched.length > 0) {
+        setProducts(fetched);
+        setIsBackendConnected(isFromBackend);
+      }
+    } finally {
+      setIsLoadingProducts(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    reloadProducts();
+  }, [reloadProducts]);
 
   // Sync to local storage
   useEffect(() => {
@@ -84,6 +116,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem('soundrent_coupon');
     }
   }, [appliedCoupon]);
+
+  const addNewProduct = async (prodData: Partial<Product>): Promise<Product> => {
+    const created = await soundRentApi.createProduct(prodData);
+    setProducts(prev => [created, ...prev]);
+    return created;
+  };
+
+  const updateExistingProduct = async (id: string, updates: Partial<Product>) => {
+    await soundRentApi.updateProduct(id, updates);
+    setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...updates } : p)));
+  };
+
+  const deleteExistingProduct = async (id: string) => {
+    await soundRentApi.deleteProduct(id);
+    setProducts(prev => prev.filter(p => p.id !== id));
+  };
 
   const addToCart = (
     product: Product, 
@@ -264,14 +312,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const confirmPaymentSuccess = () => {
     if (!activeBooking) return;
 
-    // Kurangi stok produk secara real-time
+    const paidOrder = { ...activeBooking, paymentStatus: 'paid' as const };
+    
+    // Asynchronously submit order to Cloudflare D1
+    soundRentApi.submitOrder(paidOrder);
+
+    // Kurangi stok produk secara lokal
     setProducts(prevProducts => {
       return prevProducts.map(prod => {
-        const bookedItem = activeBooking.items.find(i => i.product.id === prod.id);
+        const bookedItem = paidOrder.items.find(i => i.product.id === prod.id);
         if (bookedItem) {
+          const newStock = Math.max(0, prod.stock - bookedItem.quantity);
+          // Sync with backend API if available
+          soundRentApi.updateProduct(prod.id, { stock: newStock });
           return {
             ...prod,
-            stock: Math.max(0, prod.stock - bookedItem.quantity)
+            stock: newStock
           };
         }
         return prod;
@@ -285,6 +341,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <CartContext.Provider value={{
       products,
+      isLoadingProducts,
+      isBackendConnected,
+      reloadProducts,
+      addNewProduct,
+      updateExistingProduct,
+      deleteExistingProduct,
       cartItems,
       addToCart,
       removeFromCart,
@@ -308,6 +370,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsCheckoutOpen,
       isTermsOpen,
       setIsTermsOpen,
+      isAdminOpen,
+      setIsAdminOpen,
       activeBooking,
       setActiveBooking,
       isPaymentSimulatorOpen,
