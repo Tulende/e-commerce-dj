@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import { CustomerDetails, PaymentMethodType } from '../types';
 import { formatRupiah } from '../utils/formatters';
 import { X, ShieldCheck, QrCode, Building2, CreditCard, Lock, ArrowRight, UserCheck } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export const CheckoutModal: React.FC = () => {
   const {
@@ -17,6 +18,7 @@ export const CheckoutModal: React.FC = () => {
     processBooking,
     setIsPaymentSimulatorOpen,
   } = useCart();
+  const { user, open: openAuth } = useAuth();
 
   const [customer, setCustomer] = useState<CustomerDetails>({
     fullName: '',
@@ -36,6 +38,12 @@ export const CheckoutModal: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!user) {
+      setErrorMsg('Silakan masuk atau daftar terlebih dahulu untuk melanjutkan pesanan.');
+      openAuth();
+      return;
+    }
 
     if (!customer.fullName.trim() || !customer.phone.trim() || !customer.idCardNumber.trim() || !customer.address.trim()) {
       setErrorMsg('Mohon lengkapi Nama, WhatsApp, NIK KTP/SIM, dan Alamat Lokasi Acara.');

@@ -2,8 +2,10 @@
 // GET /api/orders - List customer orders
 // POST /api/orders - Create a new booking order and decrease stock in D1
 
+import { getUser, requireAdmin, json } from '../_auth';
 interface Env {
   DB: any;
+  AUTH_SECRET: string;
 }
 
 const corsHeaders = {
@@ -16,8 +18,9 @@ export const onRequestOptions = async () => {
   return new Response(null, { status: 204, headers: corsHeaders });
 };
 
-export const onRequestGet = async (context: { env: Env }) => {
+export const onRequestGet = async (context: { request: Request; env: Env }) => {
   try {
+    if (!await requireAdmin(context.request, context.env.AUTH_SECRET)) return json({ error: 'Admin authorization required.' }, 403);
     const { results } = await context.env.DB.prepare(
       'SELECT * FROM orders ORDER BY created_at DESC LIMIT 50'
     ).all();
@@ -51,11 +54,13 @@ export const onRequestGet = async (context: { env: Env }) => {
 
 export const onRequestPost = async (context: { request: Request; env: Env }) => {
   try {
+    const user = await getUser(context.request, context.env.AUTH_SECRET);
+    if (!user) return json({ error: 'Silakan masuk sebelum membuat pesanan.' }, 401);
     const order = await context.request.json() as any;
 
     const id = order.id || `SR-${Date.now().toString().slice(-6)}`;
     const createdAt = order.createdAt || new Date().toISOString();
-    const customerJson = JSON.stringify(order.customer || {});
+    const customerJson = JSON.stringify({ ...(order.customer || {}), fullName: order.customer?.fullName || user.fullName, email: user.email });
     const itemsJson = JSON.stringify(order.items || []);
     const subtotal = Number(order.subtotal || 0);
     const discountAmount = Number(order.discountAmount || 0);
@@ -71,12 +76,12 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       INSERT INTO orders (
         id, created_at, customer, items, subtotal, discount_amount,
         deposit_total, delivery_fee, total_amount, payment_method,
-        payment_status, rental_status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        payment_status, rental_status, user_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       id, createdAt, customerJson, itemsJson, subtotal, discountAmount,
       depositTotal, deliveryFee, totalAmount, paymentMethod,
-      paymentStatus, rentalStatus
+      paymentStatus, rentalStatus, user.id
     ).run();
 
     // Reduce stock for each booked item in products table

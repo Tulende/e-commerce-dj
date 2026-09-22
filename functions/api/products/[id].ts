@@ -3,8 +3,10 @@
 // PUT /api/products/:id - Update product
 // DELETE /api/products/:id - Delete product
 
+import { requireAdmin, json } from '../../_auth';
 interface Env {
   DB: any;
+  AUTH_SECRET: string;
 }
 
 const corsHeaders = {
@@ -65,6 +67,7 @@ export const onRequestGet = async (context: { params: { id: string }; env: Env }
 export const onRequestPut = async (context: { params: { id: string }; request: Request; env: Env }) => {
   const { id } = context.params;
   try {
+    if (!await requireAdmin(context.request, context.env.AUTH_SECRET)) return json({ error: 'Admin authorization required.' }, 403);
     const body = await context.request.json() as any;
     const existing = await context.env.DB.prepare('SELECT * FROM products WHERE id = ?').bind(id).first();
     if (!existing) {
@@ -122,9 +125,10 @@ export const onRequestPut = async (context: { params: { id: string }; request: R
   }
 };
 
-export const onRequestDelete = async (context: { params: { id: string }; env: Env }) => {
+export const onRequestDelete = async (context: { params: { id: string }; request: Request; env: Env }) => {
   const { id } = context.params;
   try {
+    if (!await requireAdmin(context.request, context.env.AUTH_SECRET)) return json({ error: 'Admin authorization required.' }, 403);
     const res = await context.env.DB.prepare('DELETE FROM products WHERE id = ?').bind(id).run();
     return new Response(JSON.stringify({ success: true, deletedId: id }), {
       status: 200,

@@ -3,6 +3,10 @@ import { DUMMY_PRODUCTS } from '../data/products';
 import { PROMO_COUPONS } from '../data/promotions';
 
 const API_BASE = '/api';
+const authHeaders = () => {
+  const token = localStorage.getItem('soundrent_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
 
 export const soundRentApi = {
   /**
@@ -38,7 +42,7 @@ export const soundRentApi = {
     try {
       const res = await fetch(`${API_BASE}/products`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify(product),
       });
       if (res.ok) {
@@ -78,7 +82,7 @@ export const soundRentApi = {
     try {
       const res = await fetch(`${API_BASE}/products/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify(updates),
       });
       if (res.ok) {
@@ -97,6 +101,7 @@ export const soundRentApi = {
     try {
       const res = await fetch(`${API_BASE}/products/${id}`, {
         method: 'DELETE',
+        headers: authHeaders(),
       });
       return res.ok;
     } catch (err) {
@@ -128,7 +133,7 @@ export const soundRentApi = {
     try {
       const res = await fetch(`${API_BASE}/orders`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify(order),
       });
       return res.ok;
@@ -143,7 +148,7 @@ export const soundRentApi = {
    */
   async getOrders(): Promise<BookingOrder[]> {
     try {
-      const res = await fetch(`${API_BASE}/orders`);
+      const res = await fetch(`${API_BASE}/orders`, { headers: authHeaders() });
       if (res.ok) {
         return await res.json();
       }

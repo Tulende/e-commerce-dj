@@ -2,8 +2,10 @@
 // GET /api/products - Get list of products
 // POST /api/products - Create a new product
 
+import { requireAdmin, json } from '../_auth';
 interface Env {
   DB: any; // D1Database
+  AUTH_SECRET: string;
 }
 
 const corsHeaders = {
@@ -63,6 +65,7 @@ export const onRequestGet = async (context: { env: Env }) => {
 
 export const onRequestPost = async (context: { request: Request; env: Env }) => {
   try {
+    if (!await requireAdmin(context.request, context.env.AUTH_SECRET)) return json({ error: 'Admin authorization required.' }, 403);
     const body = await context.request.json() as any;
     
     const id = body.id || `prod-${Date.now()}`;
