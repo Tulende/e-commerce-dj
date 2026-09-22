@@ -1,6 +1,7 @@
 import React from 'react';
-import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles, Bot, Database } from 'lucide-react';
+import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles, Bot, LayoutDashboard, LogOut, UserRound } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { formatRupiah } from '../utils/formatters';
 
 interface NavbarProps {
@@ -8,10 +9,11 @@ interface NavbarProps {
   setSearchQuery: (q: string) => void;
   onOpenPromo: () => void;
   onOpenAI: () => void;
+  onOpenDashboard: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onOpenPromo, onOpenAI }) => {
-  const { totalItemCount, subtotal, setIsCartOpen, setIsTermsOpen, setIsAdminOpen, isBackendConnected } = useCart();
+export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onOpenPromo, onOpenAI, onOpenDashboard }) => {
+  const { totalItemCount, subtotal, setIsCartOpen, setIsTermsOpen } = useCart(); const { user, open, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#0B0F19]/90 border-b border-slate-800/80 transition-all">
@@ -97,19 +99,8 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onO
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </button>
 
-          {/* Kelola Produk / Admin Button */}
-          <button
-            onClick={() => setIsAdminOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/60 shadow-sm transition-all"
-            title="Kelola Data Produk Asli & Database"
-          >
-            <Database className="w-4 h-4 text-cyan-400" />
-            <span className="hidden sm:inline">Kelola Produk</span>
-            <span 
-              className={`w-1.5 h-1.5 rounded-full ${isBackendConnected ? 'bg-emerald-400' : 'bg-amber-400'}`}
-              title={isBackendConnected ? 'Cloudflare D1 Aktif' : 'Mode Offline/Lokal'}
-            />
-          </button>
+          {user?.role === 'admin' && <button onClick={onOpenDashboard} className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-violet-700 rounded-xl bg-violet-100"><LayoutDashboard className="w-4 h-4"/><span className="hidden sm:inline">Dashboard</span></button>}
+          {user ? <button onClick={logout} className="flex items-center gap-1 px-2 text-xs text-slate-500" title="Keluar"><UserRound className="w-4 h-4"/><span className="hidden lg:inline">{user.fullName}</span><LogOut className="w-3 h-3"/></button> : <button onClick={open} className="px-3 py-2 text-xs font-bold rounded-xl bg-pink-100 text-pink-700">Masuk / Daftar</button>}
 
           {/* Cart Button */}
           <button

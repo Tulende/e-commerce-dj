@@ -71,3 +71,6 @@ export interface BookingOrder {
   paymentStatus: 'pending' | 'paid' | 'cancelled';
   rentalStatus: 'booked' | 'active' | 'returned';
 }
+
+export type UserRole = 'admin' | 'customer';
+export interface AuthUser { id: string; fullName: string; email: string; role: UserRole; }

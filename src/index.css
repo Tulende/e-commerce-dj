@@ -73,3 +73,6 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.auth-input { width: 100%; margin: 0.35rem 0 0.8rem; padding: 0.65rem 0.75rem; border-radius: 0.7rem; border: 1px solid #ead9e7; color: #382b42; background: #fffafd; font-size: 0.875rem; }
+.auth-input:focus { outline: 2px solid #dba0c0; border-color: transparent; }

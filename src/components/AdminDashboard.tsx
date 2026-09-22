@@ -1,0 +1,14 @@
+import React, { useEffect, useState } from 'react';
+import { Activity, Boxes, ClipboardList, Wallet, X } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { BookingOrder } from '../types';
+import { soundRentApi } from '../services/api';
+import { formatRupiah } from '../utils/formatters';
+export const AdminDashboard: React.FC<{open:boolean;onClose:()=>void}> = ({open,onClose}) => {
+ const {products,setIsAdminOpen}=useCart(); const [orders,setOrders]=useState<BookingOrder[]>([]);
+ useEffect(()=>{if(open) soundRentApi.getOrders().then(setOrders);},[open]); if(!open)return null;
+ const revenue=orders.filter(o=>o.paymentStatus==='paid').reduce((n,o)=>n+o.totalAmount,0);
+ return <div className="fixed inset-0 z-[60] overflow-y-auto bg-[#fbf8fc] p-4 sm:p-8"><div className="max-w-6xl mx-auto"><header className="flex justify-between items-center mb-8"><div><p className="text-pink-600 font-bold text-sm">ADMIN AREA</p><h1 className="text-3xl font-black text-slate-800">Dashboard SoundRent</h1><p className="text-slate-500 text-sm">Pantau transaksi, stok, dan proses rental secara real-time.</p></div><div className="flex gap-2"><button onClick={()=>setIsAdminOpen(true)} className="px-4 py-2 rounded-xl bg-violet-100 text-violet-700 font-semibold text-sm">Kelola produk</button><button onClick={onClose} className="p-2 rounded-xl bg-white border"><X/></button></div></header>
+ <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-7">{[[ClipboardList,'Total pesanan',orders.length,'text-pink-600'],[Wallet,'Pendapatan lunas',formatRupiah(revenue),'text-emerald-600'],[Boxes,'Produk terdaftar',products.length,'text-violet-600'],[Activity,'Stok menipis',products.filter(p=>p.stock<3).length,'text-amber-600']].map(([Icon,label,value,color]:any)=><div key={label} className="bg-white rounded-2xl p-5 border border-pink-100"><Icon className={`w-5 h-5 ${color}`}/><p className="text-xs text-slate-500 mt-3">{label}</p><p className="text-xl font-black text-slate-800">{value}</p></div>)}</div>
+ <section className="bg-white rounded-2xl border border-pink-100 overflow-hidden"><div className="p-5 border-b"><h2 className="font-bold text-slate-800">Proses rental terbaru</h2></div>{orders.length===0?<p className="p-8 text-sm text-slate-500">Belum ada pesanan dari database. Pesanan yang masuk akan tampil di sini.</p>:<div className="divide-y">{orders.map(o=><div key={o.id} className="p-4 flex flex-wrap gap-3 justify-between"><div><p className="font-bold text-slate-800">{o.id} · {o.customer.fullName}</p><p className="text-xs text-slate-500">{new Date(o.createdAt).toLocaleString('id-ID')} · {o.items.length} alat</p></div><div className="text-right"><p className="font-bold">{formatRupiah(o.totalAmount)}</p><span className="text-xs px-2 py-1 rounded-full bg-pink-50 text-pink-700">{o.paymentStatus} · {o.rentalStatus}</span></div></div>)}</div>}</section></div></div>;
+};

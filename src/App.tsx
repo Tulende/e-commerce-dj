@@ -16,6 +16,9 @@ import { AIFloatingTrigger } from './components/AIFloatingTrigger';
 import { AdminProductManager } from './components/AdminProductManager';
 import { Footer } from './components/Footer';
 import { Frown } from 'lucide-react';
+import { AuthProvider } from './context/AuthContext';
+import { AuthModal } from './components/AuthModal';
+import { AdminDashboard } from './components/AdminDashboard';
 
 const MainShop: React.FC = () => {
   const { products } = useCart();
@@ -26,6 +29,7 @@ const MainShop: React.FC = () => {
   const [sortBy, setSortBy] = useState<'featured' | 'price_asc' | 'price_desc' | 'rating'>('featured');
   const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
+  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -85,6 +89,7 @@ const MainShop: React.FC = () => {
         setSearchQuery={setSearchQuery}
         onOpenPromo={() => setIsPromoModalOpen(true)}
         onOpenAI={() => setIsAIOpen(true)}
+        onOpenDashboard={() => setIsDashboardOpen(true)}
       />
 
       {/* Hero and Promotions */}
@@ -145,6 +150,8 @@ const MainShop: React.FC = () => {
       <AIAssistantModal isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
       <AIFloatingTrigger isOpen={isAIOpen} onClick={() => setIsAIOpen(true)} />
       <AdminProductManager />
+      <AuthModal />
+      <AdminDashboard open={isDashboardOpen} onClose={() => setIsDashboardOpen(false)} />
 
       {/* Footer */}
       <Footer />
@@ -154,9 +161,7 @@ const MainShop: React.FC = () => {
 
 export function App() {
   return (
-    <CartProvider>
-      <MainShop />
-    </CartProvider>
+    <AuthProvider><CartProvider><MainShop /></CartProvider></AuthProvider>
   );
 }
 
