@@ -21,13 +21,13 @@ export default {
           950: '#4a044e',
         },
         dj: {
-          dark: '#0B0F19',
-          card: '#131B2E',
-          border: '#1F2B48',
-          accent: '#06B6D4',
-          neon: '#10B981',
-          gold: '#F59E0B',
-          pink: '#EC4899',
+          dark: '#FBF8FC',
+          card: '#F7EFF7',
+          border: '#E8D8E7',
+          accent: '#7160A7',
+          neon: '#548B75',
+          gold: '#AF7654',
+          pink: '#A64D7A',
         }
       }
     },

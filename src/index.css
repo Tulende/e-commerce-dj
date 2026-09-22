@@ -4,9 +4,46 @@
 
 @layer base {
   body {
-    background-color: #0B0F19;
-    color: #F1F5F9;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(245, 211, 232, 0.72), transparent 30rem),
+      radial-gradient(circle at 88% 8%, rgba(218, 211, 245, 0.7), transparent 28rem),
+      #fbf8fc;
+    color: #3e3447;
   }
+}
+
+/* Soft femme-DJ palette: blush, lilac, peach, and a quiet mint accent. */
+@layer utilities {
+  [class*="bg-slate-950"],
+  [class*="bg-[#0B0F19]"] { background-color: #fffafd !important; }
+  [class*="bg-slate-900"],
+  [class*="bg-[#131B2E]"] { background-color: #f7eff7 !important; }
+  [class*="bg-slate-800"] { background-color: #eee3f0 !important; }
+  [class*="bg-slate-700"] { background-color: #e3d4e7 !important; }
+
+  [class*="text-white"] { color: #382b42 !important; }
+  [class*="text-slate-200"] { color: #4b3b55 !important; }
+  [class*="text-slate-300"] { color: #5e4b68 !important; }
+  [class*="text-slate-400"] { color: #78677f !important; }
+  [class*="text-slate-500"], [class*="text-slate-600"] { color: #9c879f !important; }
+  [class*="border-slate-"] { border-color: #e8d8e7 !important; }
+
+  [class*="bg-fuchsia-"], [class*="bg-pink-"] { background-color: #e9a8c8 !important; }
+  [class*="text-fuchsia-"], [class*="text-pink-"] { color: #a64d7a !important; }
+  [class*="border-fuchsia-"], [class*="border-pink-"] { border-color: #dfa0c0 !important; }
+  [class*="bg-cyan-"] { background-color: #ddd5f1 !important; }
+  [class*="text-cyan-"] { color: #7160a7 !important; }
+  [class*="border-cyan-"] { border-color: #cfc3ea !important; }
+  [class*="bg-emerald-"] { background-color: #d8ebe2 !important; }
+  [class*="text-emerald-"] { color: #548b75 !important; }
+  [class*="border-emerald-"] { border-color: #b9ddcd !important; }
+  [class*="bg-amber-"] { background-color: #fae6cf !important; }
+  [class*="text-amber-"] { color: #af7654 !important; }
+  [class*="border-amber-"] { border-color: #f0cfad !important; }
+
+  [class*="from-fuchsia-"] { --tw-gradient-from: #d98bb4 var(--tw-gradient-from-position) !important; }
+  [class*="via-pink-"], [class*="via-purple-"] { --tw-gradient-stops: var(--tw-gradient-from), #cdb5dc var(--tw-gradient-via-position), var(--tw-gradient-to) !important; }
+  [class*="to-pink-"], [class*="to-cyan-"] { --tw-gradient-to: #f3c7b7 var(--tw-gradient-to-position) !important; }
 }
 
 /* Custom modern scrollbar */
@@ -16,16 +53,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0F19;
+  background: #f7eff7;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #d9bdd1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #c894b6;
 }
 
 /* Hide scrollbar utility */
