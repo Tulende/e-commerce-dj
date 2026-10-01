@@ -19,9 +19,12 @@ import { Frown } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
 import { AuthModal } from './components/AuthModal';
 import { AdminDashboard } from './components/AdminDashboard';
+import { PWAInstallPrompt } from './components/PWAInstallPrompt';
+import { MobileEstimator } from './components/MobileEstimator';
+import { PostPurchaseModal } from './components/PostPurchaseModal';
 
 const MainShop: React.FC = () => {
-  const { products } = useCart();
+  const { products, activeBooking, setActiveBooking } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>('Semua');
   const [onlyInStock, setOnlyInStock] = useState(false);
@@ -153,11 +156,14 @@ const MainShop: React.FC = () => {
       <AuthModal />
       <AdminDashboard open={isDashboardOpen} onClose={() => setIsDashboardOpen(false)} />
 
-      {/* Footer */}
-      <Footer />
-    </div>
-  );
-};
+      {/* New UI components */}
+      <PWAInstallPrompt />
+      <MobileEstimator />
+      <PostPurchaseModal
+        order={activeBooking}
+        isOpen={!!activeBooking}
+        onClose={() => setActiveBooking(null)}
+      />
 
 export function App() {
   return (

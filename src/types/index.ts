@@ -74,3 +74,31 @@ export interface BookingOrder {
 
 export type UserRole = 'admin' | 'customer';
 export interface AuthUser { id: string; fullName: string; email: string; role: UserRole; }
+
+export interface Review {
+  id: string;
+  productId: string;
+  userName: string;
+  rating: number; // 1 - 5
+  comment: string;
+  createdAt: string;
+  eventType?: string; // misal: 'Pesta Ulang Tahun', 'Gig Kafe', 'Wedding', 'Latihan Studio'
+  userAvatar?: string;
+  verifiedRental?: boolean;
+}
+
+export interface CustomerCRM {
+  id: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  address: string;
+  city: string;
+  idCardNumber: string;
+  totalOrders: number;
+  totalSpent: number;
+  lastRentalDate: string;
+  tier: 'Regular' | 'Silver' | 'Gold' | 'VIP';
+  notes?: string;
+}
+
