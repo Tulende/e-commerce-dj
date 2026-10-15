@@ -5,7 +5,25 @@ import './index.css';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((err) => console.error('Service worker registration failed:', err));
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => {
+        // Cek update service worker secara berkala
+        reg.update();
+
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // Versi baru siap, reload otomatis untuk menerapkan tampilan terbaru
+                window.location.reload();
+              }
+            });
+          }
+        });
+      })
+      .catch((err) => console.error('Service worker registration failed:', err));
   });
 }
 
