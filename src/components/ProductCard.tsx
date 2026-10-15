@@ -60,51 +60,50 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Content Info */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+      <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
           {/* Category & Rating */}
-          <div className="flex items-center justify-between gap-2 mb-1.5">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              {product.category} &bull; <span className="text-slate-300">{product.brand}</span>
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <span className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider truncate">
+              {product.category}
             </span>
-            <div className="flex items-center gap-1 text-xs text-amber-400 font-bold">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            <div className="flex items-center gap-1 text-[11px] sm:text-xs text-amber-400 font-bold flex-shrink-0">
+              <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400" />
               <span>{product.rating.toFixed(1)}</span>
-              <span className="text-slate-500 font-normal">({product.reviewsCount})</span>
             </div>
           </div>
 
           {/* Name */}
-          <h3 className="font-bold text-base text-white group-hover:text-fuchsia-300 transition-colors line-clamp-2 leading-snug mb-2">
+          <h3 className="font-bold text-xs sm:text-base text-white group-hover:text-fuchsia-300 transition-colors line-clamp-2 leading-snug mb-1 sm:mb-2">
             {product.name}
           </h3>
 
-          {/* Short Description */}
-          <p className="text-xs text-slate-400 line-clamp-2 mb-3">
+          {/* Short Description (Desktop only to keep mobile cards neat) */}
+          <p className="hidden sm:block text-xs text-slate-400 line-clamp-2 mb-3">
             {product.description}
           </p>
         </div>
 
         {/* Price & Action Area */}
-        <div className="pt-3 border-t border-slate-800/80 flex flex-col gap-3">
-          <div className="flex items-baseline justify-between">
+        <div className="pt-2 sm:pt-3 border-t border-slate-800/80 flex flex-col gap-2 sm:gap-3">
+          <div className="flex items-baseline justify-between gap-1">
             <div>
-              <span className="text-[10px] text-slate-400 block font-medium">Tarif Sewa / Hari:</span>
-              <div className="flex items-baseline gap-2">
-                <span className="text-lg sm:text-xl font-extrabold text-white font-['Outfit']">
+              <span className="text-[9px] sm:text-[10px] text-slate-400 block font-medium">Tarif / Hari:</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-sm sm:text-xl font-extrabold text-white font-['Outfit']">
                   {formatRupiah(effectivePrice)}
                 </span>
                 {product.isPromo && (
-                  <span className="text-xs text-slate-500 line-through">
+                  <span className="text-[10px] sm:text-xs text-slate-500 line-through">
                     {formatRupiah(product.dailyPrice)}
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="text-right">
-              <span className="text-[10px] text-slate-400 block font-medium">Jaminan Sewa:</span>
-              <span className="text-xs font-semibold text-slate-300 flex items-center gap-1 justify-end">
+            <div className="text-right flex-shrink-0">
+              <span className="text-[9px] sm:text-[10px] text-slate-400 block font-medium">Deposit:</span>
+              <span className="text-[10px] sm:text-xs font-semibold text-slate-300 flex items-center gap-0.5 sm:gap-1 justify-end">
                 <Shield className="w-3 h-3 text-cyan-400" />
                 {formatRupiah(product.depositAmount)}
               </span>
@@ -112,18 +111,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
             <button
               onClick={() => setSelectedProductForModal(product)}
-              className="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-xs font-semibold text-slate-200 hover:text-white transition-colors text-center"
+              className="w-full py-1.5 sm:py-2 px-1 sm:px-3 rounded-lg sm:rounded-xl bg-slate-800/80 hover:bg-slate-700 text-[11px] sm:text-xs font-semibold text-slate-200 hover:text-white transition-colors text-center"
             >
-              Detail Alat
+              Detail
             </button>
 
             <button
               onClick={handleQuickAdd}
               disabled={isOutOfStock}
-              className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`w-full py-1.5 sm:py-2 px-1 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 ${
                 isOutOfStock
                   ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
                   : isInCart
@@ -132,16 +131,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               }`}
             >
               {isOutOfStock ? (
-                'Stok Habis'
+                'Habis'
               ) : isInCart ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Di Keranjang</span>
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  <span>Ada</span>
                 </>
               ) : (
                 <>
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Sewa Sekarang</span>
+                  <Plus className="w-3 h-3" />
+                  <span>Sewa</span>
                 </>
               )}
             </button>

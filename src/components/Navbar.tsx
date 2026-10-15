@@ -69,45 +69,45 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onO
 
         {/* Right Action Buttons */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Syarat Sewa Button */}
+          {/* Syarat Sewa Button (Desktop only) */}
           <button
             onClick={() => setIsTermsOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white rounded-xl hover:bg-slate-800/70 border border-slate-800 transition-colors"
+            className="hidden md:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white rounded-xl hover:bg-slate-800/70 border border-slate-800 transition-colors"
             title="Syarat & Ketentuan Rental"
           >
             <ShieldCheck className="w-4 h-4 text-cyan-400" />
-            <span className="hidden sm:inline">Syarat Sewa</span>
+            <span>Syarat Sewa</span>
           </button>
 
-          {/* Promo List Button */}
+          {/* Promo List Button (Desktop only) */}
           <button
             onClick={onOpenPromo}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-fuchsia-300 hover:text-fuchsia-200 rounded-xl bg-fuchsia-950/40 hover:bg-fuchsia-900/50 border border-fuchsia-800/60 transition-colors"
+            className="hidden md:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-fuchsia-300 hover:text-fuchsia-200 rounded-xl bg-fuchsia-950/40 hover:bg-fuchsia-900/50 border border-fuchsia-800/60 transition-colors"
           >
             <Tag className="w-4 h-4 text-fuchsia-400" />
-            <span className="hidden sm:inline">Kupon Promo</span>
+            <span>Kupon Promo</span>
           </button>
 
-          {/* Mobile/Quick Estimator Button */}
+          {/* Mobile/Quick Estimator Button (Desktop only) */}
           {onOpenEstimator && (
             <button
               onClick={onOpenEstimator}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-amber-300 hover:text-amber-200 rounded-xl bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-amber-300 hover:text-amber-200 rounded-xl bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 transition-colors"
               title="Kalkulator Estimasi Biaya Sewa"
             >
               <Calculator className="w-4 h-4 text-amber-400" />
-              <span className="hidden md:inline">Estimasi Sewa</span>
+              <span>Estimasi Sewa</span>
             </button>
           )}
 
-          {/* AI Consultant Button */}
+          {/* AI Consultant Button (Desktop only) */}
           <button
             onClick={onOpenAI}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200 rounded-xl bg-cyan-950/50 hover:bg-cyan-900/60 border border-cyan-800/80 shadow-sm transition-all"
+            className="hidden md:flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200 rounded-xl bg-cyan-950/50 hover:bg-cyan-900/60 border border-cyan-800/80 shadow-sm transition-all"
             title="Tanya Rekomendasi SoundBot AI"
           >
             <Bot className="w-4 h-4 text-cyan-400" />
-            <span className="hidden sm:inline">SoundBot AI</span>
+            <span>SoundBot AI</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </button>
 

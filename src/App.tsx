@@ -22,6 +22,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { PWAInstallPrompt } from './components/PWAInstallPrompt';
 import { MobileEstimator } from './components/MobileEstimator';
 import { PostPurchaseModal } from './components/PostPurchaseModal';
+import { MobileBottomNav } from './components/MobileBottomNav';
 
 const MainShop: React.FC = () => {
   const { products, activeBooking, setActiveBooking } = useCart();
@@ -86,7 +87,7 @@ const MainShop: React.FC = () => {
   }, [products, selectedCategory, onlyInStock, onlyPromo, searchQuery, sortBy]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0F19]">
+    <div className="min-h-screen flex flex-col bg-[#0B0F19] pb-20 md:pb-0">
       {/* Navigation */}
       <Navbar
         searchQuery={searchQuery}
@@ -114,7 +115,7 @@ const MainShop: React.FC = () => {
       />
 
       {/* Product Catalog Grid */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-1 w-full">
+      <main id="catalog-grid" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-4 flex-1 w-full">
         {filteredProducts.length === 0 ? (
           <div className="py-20 flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 mb-4">
@@ -137,13 +138,16 @@ const MainShop: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Modals & Drawers */}
       <ProductModal />
@@ -169,6 +173,18 @@ const MainShop: React.FC = () => {
         order={activeBooking}
         isOpen={!!activeBooking}
         onClose={() => setActiveBooking(null)}
+      />
+
+      {/* Mobile Bottom Navigation Bar (Khusus Layar HP) */}
+      <MobileBottomNav
+        onOpenPromo={() => setIsPromoModalOpen(true)}
+        onOpenAI={() => setIsAIOpen(true)}
+        onOpenEstimator={() => setIsEstimatorOpen(true)}
+        onGoToCatalog={() => {
+          const el = document.getElementById('catalog-grid');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          else window.scrollTo({ top: 400, behavior: 'smooth' });
+        }}
       />
     </div>
   );

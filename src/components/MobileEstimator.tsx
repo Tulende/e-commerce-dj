@@ -88,8 +88,8 @@ export const MobileEstimator: React.FC<MobileEstimatorProps> = ({
 
   return (
     <>
-      {/* Floating Trigger Button (Selalu tampil di mobile & desktop) */}
-      <div className="fixed bottom-20 left-4 z-40 sm:bottom-6 sm:left-6">
+      {/* Floating Trigger Button (Khusus desktop / tablet, mobile memakai Bottom Nav) */}
+      <div className="hidden md:block fixed sm:bottom-6 sm:left-6 z-40">
         <button
           onClick={() => setIsOpen(true)}
           className="group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-fuchsia-600 via-pink-600 to-amber-500 text-white font-extrabold text-xs shadow-xl shadow-fuchsia-600/30 hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20"
