@@ -102,3 +102,39 @@ export interface CustomerCRM {
   notes?: string;
 }
 
+export type PipelineStage = 'lead' | 'negosiasi' | 'deal' | 'selesai' | 'batal';
+
+export interface PipelineDeal {
+  id: string;
+  customerId: string;
+  customerName: string;
+  title: string;
+  stage: PipelineStage;
+  value: number;
+  createdAt: string;
+  updatedAt: string;
+  notes?: string;
+  expectedCloseDate?: string;
+}
+
+export interface SupportTicket {
+  id: string;
+  customerId: string;
+  customerName: string;
+  subject: string;
+  description: string;
+  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  priority: 'low' | 'medium' | 'high';
+  createdAt: string;
+  resolvedAt?: string;
+}
+
+export interface FollowUp {
+  id: string;
+  customerId: string;
+  customerName: string;
+  type: 'jatuh_tempo' | 'follow_up_lead' | 'ucapan' | 'penawaran';
+  message: string;
+  scheduledDate: string;
+  isDone: boolean;
+}
