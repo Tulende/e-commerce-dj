@@ -33,6 +33,7 @@ const MainShop: React.FC = () => {
   const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+  const [isEstimatorOpen, setIsEstimatorOpen] = useState(false);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -93,6 +94,7 @@ const MainShop: React.FC = () => {
         onOpenPromo={() => setIsPromoModalOpen(true)}
         onOpenAI={() => setIsAIOpen(true)}
         onOpenDashboard={() => setIsDashboardOpen(true)}
+        onOpenEstimator={() => setIsEstimatorOpen(true)}
       />
 
       {/* Hero and Promotions */}
@@ -158,7 +160,11 @@ const MainShop: React.FC = () => {
 
       {/* New UI components */}
       <PWAInstallPrompt />
-      <MobileEstimator />
+      <MobileEstimator
+        isOpen={isEstimatorOpen}
+        onClose={() => setIsEstimatorOpen(false)}
+        onOpen={() => setIsEstimatorOpen(true)}
+      />
       <PostPurchaseModal
         order={activeBooking}
         isOpen={!!activeBooking}

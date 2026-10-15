@@ -1,5 +1,4 @@
-import React from 'react';
-import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles, Bot, LayoutDashboard, LogOut, UserRound } from 'lucide-react';
+import { ShoppingBag, Disc3, ShieldCheck, Tag, Sparkles, Bot, LayoutDashboard, LogOut, UserRound, Calculator } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { formatRupiah } from '../utils/formatters';
@@ -10,9 +9,10 @@ interface NavbarProps {
   onOpenPromo: () => void;
   onOpenAI: () => void;
   onOpenDashboard: () => void;
+  onOpenEstimator?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onOpenPromo, onOpenAI, onOpenDashboard }) => {
+export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onOpenPromo, onOpenAI, onOpenDashboard, onOpenEstimator }) => {
   const { totalItemCount, subtotal, setIsCartOpen, setIsTermsOpen } = useCart(); const { user, open, logout } = useAuth();
 
   return (
@@ -87,6 +87,18 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery, onO
             <Tag className="w-4 h-4 text-fuchsia-400" />
             <span className="hidden sm:inline">Kupon Promo</span>
           </button>
+
+          {/* Mobile/Quick Estimator Button */}
+          {onOpenEstimator && (
+            <button
+              onClick={onOpenEstimator}
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-amber-300 hover:text-amber-200 rounded-xl bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 transition-colors"
+              title="Kalkulator Estimasi Biaya Sewa"
+            >
+              <Calculator className="w-4 h-4 text-amber-400" />
+              <span className="hidden md:inline">Estimasi Sewa</span>
+            </button>
+          )}
 
           {/* AI Consultant Button */}
           <button
