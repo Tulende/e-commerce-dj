@@ -8,7 +8,7 @@ import { ProductCard } from './components/ProductCard';
 import { ProductModal } from './components/ProductModal';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
-import { PaymentSimulator } from './components/PaymentSimulator';
+import { MidtransPayment } from './components/MidtransPayment';
 import { RentalTermsModal } from './components/RentalTermsModal';
 import { PromoModal } from './components/PromoModal';
 import { AIAssistantModal } from './components/AIAssistantModal';
@@ -147,7 +147,7 @@ const MainShop: React.FC = () => {
       <ProductModal />
       <CartDrawer />
       <CheckoutModal />
-      <PaymentSimulator />
+      <MidtransPayment />
       <RentalTermsModal />
       <PromoModal isOpen={isPromoModalOpen} onClose={() => setIsPromoModalOpen(false)} />
       <AIAssistantModal isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
