@@ -50,8 +50,8 @@ export const PWAInstallPrompt: React.FC = () => {
             </div>
           </div>
           <div>
-            <h4 className="text-xs font-bold text-white">Install Aplikasi BorrowDJ</h4>
-            <p className="text-[11px] text-[#A87BAC]">Akses cepat rental alat musik langsung dari layar HP Anda.</p>
+            <h4 className="text-xs font-bold text-white">Install Aplikasi SoundRent PRO</h4>
+            <p className="text-[11px] text-[#A87BAC]">Akses cepat rental alat musik & DJ langsung dari layar HP atau Desktop Anda.</p>
           </div>
         </div>
 

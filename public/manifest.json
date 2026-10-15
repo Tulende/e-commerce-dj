@@ -1,11 +1,13 @@
 {
-  "name": "BorrowDJ - Rental Alat Musik & DJ Gear",
-  "short_name": "BorrowDJ",
-  "description": "Platform e-commerce persewaan alat musik dan perangkat DJ profesional nomor 1 di Indonesia.",
+  "name": "SoundRent PRO - Rental Alat Musik & DJ Gear",
+  "short_name": "SoundRent PRO",
+  "description": "Platform e-commerce persewaan alat musik dan perangkat DJ profesional dengan stok real-time dan pembayaran online aman.",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#1A1520",
-  "theme_color": "#C9849A",
+  "background_color": "#0B0F19",
+  "theme_color": "#0B0F19",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -19,6 +21,22 @@
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Katalog Alat Musik",
+      "short_name": "Katalog",
+      "description": "Jelajahi inventaris alat musik dan DJ gear",
+      "url": "/#catalog",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Voucher Promo",
+      "short_name": "Promo",
+      "description": "Cek kupon dan diskon rental aktif",
+      "url": "/#promo",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
     }
   ],
   "categories": ["shopping", "entertainment", "music"],
