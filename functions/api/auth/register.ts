@@ -8,6 +8,6 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     const exists = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email).first(); if (exists) return json({ error: 'Email sudah terdaftar.' }, 409);
     const id = crypto.randomUUID(); const salt = randomValue(); const passwordHash = await hashPassword(password, salt);
     await env.DB.prepare('INSERT INTO users (id, full_name, email, password_hash, password_salt, role) VALUES (?, ?, ?, ?, ?, ?)').bind(id, fullName, email, passwordHash, salt, role).run();
-    const user = { id, fullName, email, role }; return json({ user, token: await issueToken(user, env.AUTH_SECRET) }, 201);
+    const user = { id, fullName, email, role: role as 'admin' | 'customer' }; return json({ user, token: await issueToken(user, env.AUTH_SECRET) }, 201);
   } catch { return json({ error: 'Pendaftaran gagal.' }, 500); }
 };

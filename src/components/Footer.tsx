@@ -1,5 +1,5 @@
 import React from 'react';
-import { Disc3, ShieldCheck, Cloud, Phone, Mail, MapPin, Instagram, Youtube } from 'lucide-react';
+import { Disc3, ShieldCheck, Cloud, Phone, Mail, MapPin, ExternalLink, PlayCircle } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -33,7 +33,7 @@ export const Footer: React.FC = () => {
                   className="p-2 rounded-lg bg-[#221B2E] border border-[#3D2E4F] text-[#E8A0B4] hover:text-white hover:border-[#C9849A] transition-colors"
                   title="Instagram: @borrowdj.id"
                 >
-                  <Instagram className="w-4 h-4" />
+                  <ExternalLink className="w-4 h-4" />
                 </a>
 
                 {/* TikTok Icon */}
@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
                   className="p-2 rounded-lg bg-[#221B2E] border border-[#3D2E4F] text-[#E8A0B4] hover:text-white hover:border-[#C9849A] transition-colors"
                   title="YouTube: @borrowdj"
                 >
-                  <Youtube className="w-4 h-4" />
+                  <PlayCircle className="w-4 h-4" />
                 </a>
 
                 <a

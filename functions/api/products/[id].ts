@@ -3,7 +3,7 @@
 // PUT /api/products/:id - Update product
 // DELETE /api/products/:id - Delete product
 
-import { requireAdmin, json } from '../../_auth';
+import { requireAdmin, json } from '../_auth';
 interface Env {
   DB: any;
   AUTH_SECRET: string;

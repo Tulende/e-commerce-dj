@@ -3,7 +3,7 @@ import { DUMMY_PRODUCTS } from '../data/products';
 import { PROMO_COUPONS } from '../data/promotions';
 
 const API_BASE = '/api';
-const authHeaders = () => {
+const authHeaders = (): Record<string, string> => {
   const token = localStorage.getItem('soundrent_token');
   return token ? { Authorization: `Bearer ${token}` } : {};
 };

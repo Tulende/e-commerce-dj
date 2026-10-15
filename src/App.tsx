@@ -164,6 +164,9 @@ const MainShop: React.FC = () => {
         isOpen={!!activeBooking}
         onClose={() => setActiveBooking(null)}
       />
+    </div>
+  );
+};
 
 export function App() {
   return (
